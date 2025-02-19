@@ -97,7 +97,7 @@ Ensure you have the following installed:
     ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
    ```
 
-3. Update the database connection in the `AppSettings` file:
+3. Update the database connection in the `AppSettings` file.
 
 ## Usage
 
