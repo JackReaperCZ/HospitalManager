@@ -32,8 +32,14 @@ namespace HospitalManager
             builder.Database = ConfigurationManager.AppSettings["DB_DATABASE"];
             
             sqlConnection = new MySqlConnection(builder.ConnectionString);
-            
-            sqlConnection.Open();
+            try
+            {
+                sqlConnection.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Připojení k databázi selhalo. Posím zkontolujte App.config.");
+            }   
         }
 
         /// <summary>
