@@ -23,7 +23,7 @@ A simple hospital management system built with C# and Windows Forms. This applic
 
 Ensure you have the following installed:
 
-- .NET 9
+- .NET Framework 4.+
 - MySQL Server
 - MySql.Data package (for MySQL database connection)
 
