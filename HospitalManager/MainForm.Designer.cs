@@ -30,6 +30,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonImport = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonLeky = new System.Windows.Forms.Button();
             this.buttonPacienti = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.buttonImport);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonLeky);
             this.panel1.Controls.Add(this.buttonPacienti);
@@ -53,6 +55,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(163, 598);
             this.panel1.TabIndex = 0;
+            // 
+            // buttonImport
+            // 
+            this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonImport.Location = new System.Drawing.Point(3, 562);
+            this.buttonImport.Name = "buttonImport";
+            this.buttonImport.Size = new System.Drawing.Size(157, 31);
+            this.buttonImport.TabIndex = 6;
+            this.buttonImport.Text = "Import";
+            this.buttonImport.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -141,6 +153,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button buttonImport;
 
         private System.Windows.Forms.Button buttonAdd;
 

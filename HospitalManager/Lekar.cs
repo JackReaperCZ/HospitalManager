@@ -43,6 +43,7 @@ namespace HospitalManager
         /// Gets or sets the phone number of the doctor.
         /// </summary>
         public int Telefon { get; set; }
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lekar"/> class.

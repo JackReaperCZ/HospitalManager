@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace HospitalManager
 {
@@ -26,7 +28,8 @@ namespace HospitalManager
             this.buttonPacienti.Click += PacientiButtonClick;
             this.buttonLeky.Click += LekyButtonClick;
             this.buttonAdd.Click += AddButtonClick;
-
+            this.buttonImport.Click += ImportButtonClick;
+            
             Instance = this;
         }
 
@@ -93,7 +96,7 @@ namespace HospitalManager
 
             currentCellDoubleClickHandler = (sender, e) =>
             {
-                if (e.RowIndex >= 0) 
+                if (e.RowIndex >= 0)
                 {
                     Lekar selected = (Lekar)dataGridView.Rows[e.RowIndex].DataBoundItem;
                     LekarForm form = new LekarForm(selected);
@@ -130,7 +133,7 @@ namespace HospitalManager
 
             currentCellDoubleClickHandler = (sender, e) =>
             {
-                if (e.RowIndex >= 0) 
+                if (e.RowIndex >= 0)
                 {
                     Lek selected = (Lek)dataGridView.Rows[e.RowIndex].DataBoundItem;
                     LekForm form = new LekForm(selected);
@@ -150,20 +153,92 @@ namespace HospitalManager
         {
             switch (selectedPANEL)
             {
-                case PANEL.Pacient :
+                case PANEL.Pacient:
                     PacientForm formp = new PacientForm(null);
                     formp.Show();
                     break;
-                case PANEL.Lek :
+                case PANEL.Lek:
                     LekForm forml = new LekForm(null);
                     forml.Show();
                     break;
-                case PANEL.Lekar :
+                case PANEL.Lekar:
                     LekarForm formlek = new LekarForm(null);
                     formlek.Show();
                     break;
-                default :
+                default:
                     return;
+            }
+        }
+
+        private void ImportButtonClick(object sender, EventArgs e)
+        {
+            // Open File Dialog to Select JSON File
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+                openFileDialog.Title = "Select a JSON File";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string jsonContent = File.ReadAllText(openFileDialog.FileName);
+
+                        using JsonDocument doc = JsonDocument.Parse(jsonContent);
+                        JsonElement root = doc.RootElement;
+
+                        switch (selectedPANEL)
+                        {
+                            case PANEL.Pacient:
+                                Pacient pacient = new Pacient(
+                                    -1,
+                                    root.GetProperty("jmeno").GetString(),
+                                    root.GetProperty("prijmeni").GetString(),
+                                    root.GetProperty("email").GetString(),
+                                    root.GetProperty("telefon").GetInt32(),
+                                    root.GetProperty("datum_nar").GetDateTime()
+                                );
+
+                                Pacient.Submit(pacient);
+                                
+                                Refresh();
+                                break;
+                            case PANEL.Lek:
+                                Lek lek = new Lek(
+                                    -1,
+                                    root.GetProperty("nazev").GetString(),
+                                    (float)root.GetProperty("cena").GetDecimal(),
+                                    root.GetProperty("popis").GetString(),
+                                    root.GetProperty("vyrobce").GetString()
+                                );
+
+                                Lek.Submit(lek);
+                                
+                                Refresh();
+                                break;
+                            case PANEL.Lekar:
+                                Lekar lekar = new Lekar(
+                                    -1,
+                                    root.GetProperty("kod").GetInt32(),
+                                    root.GetProperty("titul").GetString(),
+                                    root.GetProperty("jmeno").GetString(),
+                                    root.GetProperty("prijmeni").GetString(),
+                                    root.GetProperty("email").GetString(),
+                                    root.GetProperty("telefon").GetInt32()
+                                );
+                                Lekar.Submit(lekar);
+                                
+                                Refresh();
+                                break;
+                            default:
+                                return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"JSON struktura neplatná. Prosím zkontrolujte ji podle dokumentace.");
+                    }
+                }
             }
         }
 
@@ -174,19 +249,19 @@ namespace HospitalManager
         {
             switch (selectedPANEL)
             {
-                case PANEL.Pacient :
+                case PANEL.Pacient:
                     selectedPANEL = PANEL.Def;
                     PacientiButtonClick(null, EventArgs.Empty);
                     break;
-                case PANEL.Lek :
+                case PANEL.Lek:
                     selectedPANEL = PANEL.Def;
                     LekyButtonClick(null, EventArgs.Empty);
                     break;
-                case PANEL.Lekar :
+                case PANEL.Lekar:
                     selectedPANEL = PANEL.Def;
                     LekariButtonClick(null, EventArgs.Empty);
                     break;
-                default :
+                default:
                     return;
             }
         }
